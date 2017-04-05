@@ -14,7 +14,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.Anexo;
 import model.Empleado;
-import model.Sexo;
+import model.Persona;
 
 /**
  *
@@ -44,7 +44,6 @@ public class Main {
             return opcion;
         } catch (IOException ex) {
             System.out.println("Hubo un error al ingresar una opcion "+ex.toString());
-            //Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
         }
         return "0";
     }
@@ -54,51 +53,78 @@ public class Main {
         System.out.println("-----------------------------------");
         System.out.println("       Registro Empleados");
         System.out.println("-----------------------------------");
-        try{
             System.out.print("Ingrese Rut: ");
+        try{
             empleado.setPerRut(entrada.readLine());
-            System.out.print("Ingrese Nombre: ");
-            empleado.setPerNombre(entrada.readLine());
-            System.out.print("Ingrese Apellidos: ");
-            empleado.setPerApellidos(entrada.readLine());
-            System.out.println("Seleccione Sexo: ");
-            for (Sexo s: Sexo.values() ) {
-                System.out.println ("\t" + s.toString() + " es " + s.getSexDescripcion());
-            }
-            System.out.print("Opcion : \t");
-            empleado.setPerSexo(entrada.readLine());
-            
         }catch(IOException ex){
             System.out.println("Ocurrio un error al ingresar datos= "+ex.toString());
         }
-        empleados.add(empleado);
+            System.out.print("Ingrese Nombre: ");
+        try{
+            empleado.setPerNombre(entrada.readLine());
+        }catch(IOException ex){
+            System.out.println("Ocurrio un error al ingresar datos= "+ex.toString());
+        }
+            System.out.print("Ingrese Apellidos: ");
+        try{
+            empleado.setPerApellidos(entrada.readLine());
+        }catch(IOException ex){
+            System.out.println("Ocurrio un error al ingresar datos= "+ex.toString());
+        }
+            System.out.println("Seleccione Sexo: ");
+            for (Persona.Sexo s: Persona.Sexo.values() ) {
+                System.out.println ("\t" + s.toString() + " es " + s.getSexDescripcion());
+            }
+            System.out.print("Opcion : \t");
+        try{
+            empleado.setPerSexo(entrada.readLine());
+        }catch(IOException ex){
+            System.out.println("Ocurrio un error al ingresar datos= "+ex.toString());
+        }
+        try{
+            empleados.add(empleado);
+            System.out.println("*****Empleado registrado con Exito*****");
+            System.out.println(empleado.toString());
+            System.out.println(empleado.getPerSexo().getSexDescripcion());
+        }catch(Exception ex){
+            System.out.println("Empleado no fue registrado, error "+ex.toString());
+        }
+        
     }
     
     public void asignarAnexo(){
         String indiceStr;
         int indice, i=0;
-        
         System.out.println("-----------------------------------");
-        System.out.println("      Lista de Trabajadores");
+        System.out.println("      Lista de Empleados");
         System.out.println("-----------------------------------");
         for (i=0;i<empleados.size();i++) {
-            System.out.println((i+1)+" "+empleados.get(i).getPerNombre()+" "+
+            System.out.print( (i+1) +" "+empleados.get(i).getPerNombre()+" "+
                     empleados.get(i).getPerApellidoPaterno()+" "+
-                    empleados.get(i).getEmpAnexo());
+                    empleados.get(i).getPerApellidoMaterno()+" tiene el anexo : ");
+            if(empleados.get(i).getEmpAnexo() != null){
+                System.out.println(empleados.get(i).getEmpAnexo());
+            }else{
+                System.out.println(" Sin asignar ");
+            }
         }
         if(i>0){
             try {
+                System.out.print("Seleccione un empleado : \t");
                 indiceStr = entrada.readLine();
                 indice = Integer.parseInt(indiceStr);
                 indice = indice-1;
+                System.out.println("-----------------------------------");
+                System.out.println("         Lista de Anexo");
+                System.out.println("-----------------------------------");
                 for(Anexo a:Anexo.values()){ 
                     System.out.println("\t" + a.getAneCodigo()+ " - "+a.toString() + " area: "+ a.getAneUbicacion());
                 }
                 System.out.print("Seleccione Anexo: ");
                 empleados.get(indice).setEmpAnexo(entrada.readLine());
+                System.out.println("*****Empleado se asigno anexo "+empleados.get(indice).getEmpAnexo().name()+" *****");
             } catch (IOException ex) {
                 System.out.println("Ocurrio un error al ingresar datos= "+ex.toString());
-                //Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
             } catch(NumberFormatException ex){
                 System.out.println("Ocurrio un error al convertir numero= "+ex.toString());
             }
@@ -109,64 +135,97 @@ public class Main {
     
     public void obtenerUbicacion(){
         String indiceStr;
-        Integer indice;
+        Integer indice, i=0;
         System.out.println("-----------------------------------");
-        System.out.println("      Lista de Trabajadores");
+        System.out.println("  Lista de Trabajadores con Anexo");
         System.out.println("-----------------------------------");
-        for (int i=0;i<empleados.size();i++) {
-            System.out.println((i+1)+" "+empleados.get(i).toString());
+        for (i=0;i<empleados.size();i++) {
+            if(empleados.get(i).getEmpAnexo() != null){
+                System.out.print( (i+1) +" "+empleados.get(i).getPerNombre()+" "+
+                    empleados.get(i).getPerApellidoPaterno()+" "+
+                    empleados.get(i).getPerApellidoMaterno()+" tiene el anexo : ");
+                System.out.println(empleados.get(i).getEmpAnexo());
+            }
         }
-        try {
-            indiceStr = entrada.readLine();
-            indice = Integer.parseInt(indiceStr);
-            System.out.println("El anexo se encuentra ubicado en: "+
-                    empleados.get(indice).getEmpAnexo().getAneUbicacion());
-        } catch (IOException ex) {
-            System.out.println("Ocurrio un error al ingresar datos= "+ex.toString());
-            //Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+        if(i>0){
+            try {
+                System.out.print("Seleccione un empleado : \t");
+                indiceStr = entrada.readLine();
+                indice = Integer.parseInt(indiceStr);
+                indice = indice-1;
+                System.out.println("El anexo se encuentra ubicado en: "+
+                        empleados.get(indice).getEmpAnexo().getAneUbicacion());
+            } catch (IOException ex) {
+                System.out.println("Ocurrio un error al ingresar datos= "+ex.toString());
+                //Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+            }catch(IndexOutOfBoundsException ex){
+                System.out.println("Empleado no existe, codigo = "+ex.toString());
+            }
+        }else{
+            System.out.println("No existen Empleados con Anexo asignado");
         }
     }
     
     public void modificarAsignacion(){
         String indiceStr;
-        Integer indice;
+        Integer indice,i=0;
         System.out.println("-----------------------------------");
-        System.out.println("      Lista de Trabajadores");
+        System.out.println("   Lista de Empleados con Anexo");
         System.out.println("-----------------------------------");
-        for (int i=0;i<empleados.size();i++) {
-            System.out.println((i+1)+" "+empleados.get(i).toString());
-        }
-        try {
-            indiceStr = entrada.readLine();
-            indice = Integer.parseInt(indiceStr);
-            System.out.println("-----------------------------------");
-            System.out.println(empleados.get(indice).getPerNombre()+
-                    " actualmente tiene el acceso"+empleados.get(indice).getEmpAnexo().name());
-            System.out.println("-----------------------------------");
-            System.out.println("Elija nuevo Anexo: ");
-            for(Anexo a:Anexo.values()){ 
-                System.out.println("\t" + a.getAneCodigo()+ " - "+a.toString() + " area: "+ a.getAneUbicacion());
+        for (i=0;i<empleados.size();i++) {
+            if(empleados.get(i).getEmpAnexo() != null){
+                System.out.print( (i+1) +" "+empleados.get(i).getPerNombre()+" "+
+                    empleados.get(i).getPerApellidoPaterno()+" "+
+                    empleados.get(i).getPerApellidoMaterno()+" tiene el anexo : ");
+                System.out.println(empleados.get(i).getEmpAnexo());
             }
-            System.out.print("Seleccione Anexo: ");
-            empleados.get(indice).setEmpAnexo(entrada.readLine());
-        } catch (IOException ex) {
-            System.out.println("Ocurrio un error al ingresar datos= "+ex.toString());
-            //Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        if(i>0){
+            try {
+                System.out.print("Seleccione un empleado : \t");
+                indiceStr = entrada.readLine();
+                indice = Integer.parseInt(indiceStr);
+                indice = indice-1;
+                System.out.println("-----------------------------------");
+                System.out.println(empleados.get(indice).getPerNombre()+
+                        " actualmente tiene el acceso"+empleados.get(indice).getEmpAnexo().name());
+                System.out.println("-----------------------------------");
+                System.out.println("Elija nuevo Anexo: ");
+                for(Anexo a:Anexo.values()){ 
+                    System.out.println("\t" + a.getAneCodigo()+ " - "+a.toString() + " area: "+ a.getAneUbicacion());
+                }
+                System.out.print("Seleccione Anexo: ");
+                empleados.get(indice).setEmpAnexo(entrada.readLine());
+                System.out.println("**** Anexo modificado *****");
+            } catch (IOException ex) {
+                System.out.println("Ocurrio un error al ingresar datos= "+ex.toString());
+                //Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }else{
+            System.out.println("No existen Empleados con Anexo asignado");
         }
     }
     
     public void desasignarAnexo(){
         String indiceStr;
-        Integer indice;
+        Integer indice,i=0;
         System.out.println("-----------------------------------");
-        System.out.println("      Lista de Trabajadores");
+        System.out.println("      Lista de Empleados");
         System.out.println("-----------------------------------");
-        for (int i=0;i<empleados.size();i++) {
-            System.out.println((i+1)+" "+empleados.get(i).toString());
+        for (i=0;i<empleados.size();i++) {
+            if(empleados.get(i).getEmpAnexo() != null){
+                System.out.print( (i+1) +" "+empleados.get(i).getPerNombre()+" "+
+                    empleados.get(i).getPerApellidoPaterno()+" "+
+                    empleados.get(i).getPerApellidoMaterno()+" tiene el anexo : ");
+                System.out.println(empleados.get(i).getEmpAnexo());
+            }
         }
         try {
+            System.out.print("Seleccione un empleado : \t");
             indiceStr = entrada.readLine();
             indice = Integer.parseInt(indiceStr);
+            indice=indice-1;
+            empleados.get(indice).setEmpAnexo(null);
             System.out.println("El anexo se ha eliminado del usuario"+
                     empleados.get(indice).toString());
         } catch (IOException ex) {
@@ -182,8 +241,16 @@ public class Main {
         System.out.println("      Reporte de Trabajadores");
         System.out.println("-----------------------------------");
         for (int i=0;i<empleados.size();i++) {
-            System.out.println(empleados.get(i).reporte());
+            System.out.print( (i+1) +" "+empleados.get(i).getPerNombre()+" "+
+                    empleados.get(i).getPerApellidoPaterno()+" "+
+                    empleados.get(i).getPerApellidoMaterno()+" tiene el anexo : ");
+            if(empleados.get(i).getEmpAnexo() != null){
+                System.out.println(empleados.get(i).getEmpAnexo());
+            }else{
+                System.out.println(" Sin asignar ");
+            }
         }
+        System.out.println("**** Fin reporte ****");
     }
     
     
@@ -215,15 +282,7 @@ public class Main {
 
             salir=input.next();
         }while(salir.equals("n"));
-       
-        
-        
-        
-        
-        
-        
-        
-        
+              
     }
     
 }

@@ -18,11 +18,11 @@ public class Persona {
     private Sexo perSexo;
 
     public Persona() {
-        this.perRut=" ";
-        this.perNombre=" ";
-        this.perApellidoPaterno=" ";
-        this.perApellidoMaterno=" ";
-        this.perNacimiento=" ";
+        this.perRut="";
+        this.perNombre="";
+        this.perApellidoPaterno="";
+        this.perApellidoMaterno="";
+        this.perNacimiento="";
     }
 
     public Persona(String perRut, String perNombre, String perApellidoPaterno, String perApellidoMaterno, String perNacimiento, Sexo perSexo) {
@@ -108,7 +108,23 @@ public class Persona {
                 " es: "+this.perSexo;
     }
     
-   
+    public static enum Sexo {
+        M("Masculino"),
+        F("Femenino"),
+        I("Indeterminado");
+
+        private String sexDescripcion;
+
+        private Sexo(String sexDescripcion) {
+            this.sexDescripcion = sexDescripcion;
+        }
+
+        public String getSexDescripcion() {
+            return sexDescripcion;
+        }
+
+
+    }
    
    
 }
