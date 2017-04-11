@@ -15,17 +15,18 @@ public class Persona {
     private String perApellidoPaterno;
     private String perApellidoMaterno;
     private String perNacimiento;
-    private Sexo perSexo;
+    private SexoPersona perSexo;
 
     public Persona() {
-        this.perRut="";
-        this.perNombre="";
-        this.perApellidoPaterno="";
-        this.perApellidoMaterno="";
-        this.perNacimiento="";
+        this.perRut = "";
+        this.perNombre = "";
+        this.perApellidoPaterno = "";
+        this.perApellidoMaterno = "";
+        this.perNacimiento = "";
+        this.perSexo = Persona.SexoPersona.I;
     }
 
-    public Persona(String perRut, String perNombre, String perApellidoPaterno, String perApellidoMaterno, String perNacimiento, Sexo perSexo) {
+    public Persona(String perRut, String perNombre, String perApellidoPaterno, String perApellidoMaterno, String perNacimiento, SexoPersona perSexo) {
         this.perRut = perRut;
         this.perNombre = perNombre;
         this.perApellidoPaterno = perApellidoPaterno;
@@ -75,56 +76,52 @@ public class Persona {
     }
 
     public void setPerNacimiento(String perNacimiento) {
-        this.perNacimiento = perNacimiento;
+        //MODIFICAR;
     }
 
-    public Sexo getPerSexo() {
+    public SexoPersona getPerSexo() {
         return perSexo;
     }
 
     public void setPerSexo(String sexo) {
         switch(sexo){
-            case "M" : perSexo=Sexo.M;
+            case "M" : perSexo=SexoPersona.M;
                 break;
-            case "F" : perSexo=Sexo.F;
+            case "F" : perSexo=SexoPersona.F;
                 break;
-            default : perSexo=Sexo.I;
+            default : perSexo=SexoPersona.I;
                 break;
         }
     }
 
     @Override
     public String toString() {
-        return "Persona{" + "perRut=" + perRut +
-                ", perNombre=" + perNombre + 
-                ", perApellidoPaterno=" + perApellidoPaterno + 
-                ", perApellidoMaterno=" + perApellidoMaterno + 
-                ", perNacimiento=" + perNacimiento + 
+        return "Persona{" + "perRut=" + perRut + "\n"+
+                ", perNombre=" + perNombre + "\n"+
+                ", perApellidoPaterno=" + perApellidoPaterno + "\n"+
+                ", perApellidoMaterno=" + perApellidoMaterno + "\n"+
+                ", perNacimiento=" + perNacimiento + "\n"+
                 ", perSexo=" + perSexo + '}';
     }
 
     public String reporte(){
-        return this.perNombre+" "+this.perApellidoPaterno+" "+this.perApellidoMaterno+
+        return this.perNombre+" "+this.perApellidoPaterno+" "+this.perApellidoMaterno+"\n"+
                 " es: "+this.perSexo;
     }
     
-    public static enum Sexo {
+    public static enum SexoPersona {
         M("Masculino"),
         F("Femenino"),
         I("Indeterminado");
 
         private String sexDescripcion;
 
-        private Sexo(String sexDescripcion) {
+        private SexoPersona(String sexDescripcion) {
             this.sexDescripcion = sexDescripcion;
         }
 
         public String getSexDescripcion() {
             return sexDescripcion;
         }
-
-
     }
-   
-   
 }

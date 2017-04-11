@@ -10,17 +10,26 @@ package model;
  * @author David
  */
 public class Empleado extends Persona{
+    private static int siguienteEmpCodigo=1;
     private String empCodigo;
     private Anexo empAnexo;
 
-    public Empleado() {
+    public Empleado() { 
+        this.setEmpCodigo();
+        this.empAnexo=null;
     }
 
-    public Empleado(String empCodigo, Anexo empAnexo, String perRut, String perNombre, String perApellidoPaterno, String perApellidoMaterno, String perNacimiento, Sexo perSexo) {
+    public Empleado(Anexo empAnexo, String perRut, String perNombre, String perApellidoPaterno, String perApellidoMaterno, String perNacimiento, SexoPersona perSexo) {
         super(perRut, perNombre, perApellidoPaterno, perApellidoMaterno, perNacimiento, perSexo);
-        this.empCodigo = empCodigo;
+        setEmpCodigo();
         this.empAnexo = empAnexo;
     }
+    
+    public void setEmpCodigo(){
+        this.empCodigo=String.valueOf(Empleado.siguienteEmpCodigo);
+        Empleado.siguienteEmpCodigo=Empleado.siguienteEmpCodigo+1;
+    }
+    
 
     public String getEmpCodigo() {
         return empCodigo;
@@ -61,14 +70,15 @@ public class Empleado extends Persona{
 
     @Override
     public String toString() {
-        return super.toString()+" Empleado{" + "empCodigo=" + empCodigo + 
+        return super.toString()+"\n"+
+                " Empleado{" + "empCodigo=" + empCodigo + "\n" +
                 " empAnexo=" + empAnexo + '}';
     }
 
     @Override
     public String reporte() {
-        return super.reporte()+
-             " como Empleado tiene el codigo: "+this.empCodigo+
+        return super.reporte()+"\n"+
+             " como Empleado tiene el codigo: "+this.empCodigo+ "\n"+
                 " con el anexo "+this.empAnexo;
     }
 

@@ -27,7 +27,6 @@ public class Main {
     BufferedReader entrada=new BufferedReader(flujoBytes);
     
     public String verMenu(){
-         
         System.out.println("-----------------------------------");
         System.out.println("       Agenda de Anexos        ");
         System.out.println("-----------------------------------");
@@ -37,6 +36,7 @@ public class Main {
         System.out.println(" 4.- Modificar Anexo a Empleado");
         System.out.println(" 5.- Desasignar Anexo a Empleado");
         System.out.println(" 6.- Listado de Asignaciones");
+        System.out.println(" 7.- Salir del Programa");
         System.out.println("-----------------------------------");
         System.out.print("Ingrese opcion\t");
         try {
@@ -48,44 +48,57 @@ public class Main {
         return "0";
     }
     
-    public void registroEmpleado(){
-        Empleado empleado=new Empleado();
+    public void registroEmpleado(Empleado e){
+        //=new Empleado();
+        
         System.out.println("-----------------------------------");
         System.out.println("       Registro Empleados");
         System.out.println("-----------------------------------");
-            System.out.print("Ingrese Rut: ");
-        try{
-            empleado.setPerRut(entrada.readLine());
-        }catch(IOException ex){
-            System.out.println("Ocurrio un error al ingresar datos= "+ex.toString());
-        }
-            System.out.print("Ingrese Nombre: ");
-        try{
-            empleado.setPerNombre(entrada.readLine());
-        }catch(IOException ex){
-            System.out.println("Ocurrio un error al ingresar datos= "+ex.toString());
-        }
-            System.out.print("Ingrese Apellidos: ");
-        try{
-            empleado.setPerApellidos(entrada.readLine());
-        }catch(IOException ex){
-            System.out.println("Ocurrio un error al ingresar datos= "+ex.toString());
-        }
-            System.out.println("Seleccione Sexo: ");
-            for (Persona.Sexo s: Persona.Sexo.values() ) {
-                System.out.println ("\t" + s.toString() + " es " + s.getSexDescripcion());
+        System.out.print("Ingrese Rut: ");
+        while(e.getPerRut().isEmpty()){
+            try{
+                e.setPerRut(entrada.readLine());
+            }catch(IOException ex){
+                System.out.println("Ocurrio un error al ingresar datos= "+ex.toString());
             }
-            System.out.print("Opcion : \t");
+        }
+        System.out.print("Ingrese Nombre: ");
+        while(e.getPerNombre().isEmpty()){
+            try{
+                e.setPerNombre(entrada.readLine());
+            }catch(IOException ex){
+                System.out.println("Ocurrio un error al ingresar datos= "+ex.toString());
+            }
+        }
+        System.out.print("Ingrese Apellidos: ");
+        while(e.getPerApellidoPaterno().isEmpty()){
+            try{
+                e.setPerApellidos(entrada.readLine());
+            }catch(IOException ex){
+                System.out.println("Ocurrio un error al ingresar datos= "+ex.toString());
+            }
+        }
+        System.out.print("Ingrese Fecha de Nacimiento formato(dd-mm-aaaa): ");
         try{
-            empleado.setPerSexo(entrada.readLine());
+            e.setPerNacimiento(entrada.readLine());
+        }catch(IOException ex){
+            System.out.println("Ocurrio un error al ingresar datos= "+ex.toString());
+        }
+        System.out.println("Menu Sexo: ");
+        for (Persona.SexoPersona s: Persona.SexoPersona.values() ) {
+            System.out.println ("\t" + s.toString() + " es " + s.getSexDescripcion());
+        }
+        System.out.print("Seleccione una Opcion : \t");
+        try{
+            e.setPerSexo(entrada.readLine());
         }catch(IOException ex){
             System.out.println("Ocurrio un error al ingresar datos= "+ex.toString());
         }
         try{
-            empleados.add(empleado);
+            empleados.add(e);
             System.out.println("*****Empleado registrado con Exito*****");
-            System.out.println(empleado.toString());
-            System.out.println(empleado.getPerSexo().getSexDescripcion());
+            System.out.println(e.toString());
+            System.out.println(e.getPerSexo().getSexDescripcion());
         }catch(Exception ex){
             System.out.println("Empleado no fue registrado, error "+ex.toString());
         }
@@ -254,17 +267,15 @@ public class Main {
     }
     
     
-    
     /**
-     * @param args the command line arguments
+     * FUNCION PRINCIPAL (PUNTO DE PARTIDA)
      */
     public static void main(String[] args) {
-        Scanner input=new Scanner(System.in);
-        String salir;
-        Main principal=new Main();
+        String salir="n"; //INICIALIZAR VARIABLE SALIR CON "N"
+        Main principal=new Main();  //INSTANCIA CLASE
         do{
             switch (principal.verMenu()){
-                case "1":principal.registroEmpleado();
+                case "1":principal.registroEmpleado(new Empleado());
                     break;
                 case "2":principal.asignarAnexo();
                     break;
@@ -276,12 +287,11 @@ public class Main {
                     break;
                 case "6":principal.listadoAsignaciones();
                     break;
+                case "7":
+                    salir="s";
                 default:
             }
-            System.out.print("Desea Salir del Programa s = SI, n = NO :\t"); 
-
-            salir=input.next();
-        }while(salir.equals("n"));
+        }while(salir.equals("n")); //PREGUNTA A LA VARIABLE SALIR
               
     }
     
