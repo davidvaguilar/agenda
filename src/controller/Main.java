@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import model.Anexo;
 import model.Empleado;
 import model.Persona;
@@ -22,118 +23,137 @@ import model.Persona;
  */
 public class Main {
 
-    ArrayList<Empleado> empleados=new ArrayList();
-    InputStreamReader flujoBytes=new InputStreamReader(System.in);
-    BufferedReader entrada=new BufferedReader(flujoBytes);
+    ArrayList<Empleado> empleados=new ArrayList();  // FORMA DE ALMACENAMIENTO
+    InputStreamReader flujoBytes=new InputStreamReader(System.in);  //CAPTURA INGRESO DE LETRAS
+    BufferedReader entrada=new BufferedReader(flujoBytes);  // BUFFER PARA ALMACENAR LETRAS DEVUELVE STRING
     
     public String verMenu(){
-        System.out.println("-----------------------------------");
-        System.out.println("       Agenda de Anexos        ");
-        System.out.println("-----------------------------------");
-        System.out.println(" 1.- Registrar Empleado");
-        System.out.println(" 2.- Asignar Anexo a Empleado");
-        System.out.println(" 3.- Obtener ubicacion de un Anexo");
-        System.out.println(" 4.- Modificar Anexo a Empleado");
-        System.out.println(" 5.- Desasignar Anexo a Empleado");
-        System.out.println(" 6.- Listado de Asignaciones");
-        System.out.println(" 7.- Salir del Programa");
-        System.out.println("-----------------------------------");
-        System.out.print("Ingrese opcion\t");
         try {
-            String opcion=entrada.readLine();
-            return opcion;
-        } catch (IOException ex) {
+            Object opcion=JOptionPane.showInputDialog(
+                    null,
+                    "Seleccione Opcion","Agenda de Anexos",
+                    JOptionPane.QUESTION_MESSAGE,
+                    null,
+                    new String[]{"1.- Registrar Empleado",
+                        "2.- Asignar Anexo a Empleado",
+                        "3.- Obtener ubicacion de un Anexo",
+                        "4.- Modificar Anexo a Empleado",
+                        "5.- Desasignar Anexo a Empleado",
+                        "6.- Listado de Asignaciones",
+                        "7.- Salir del Programa"},
+                    "1.- Registrar Empleado");
+            return(String.valueOf(opcion).substring(0, 1));  //  RETORNA A FUNCION VOID MAIN
+        } catch (Exception ex) {
             System.out.println("Hubo un error al ingresar una opcion "+ex.toString());
         }
         return "0";
     }
     
     public void registroEmpleado(Empleado e){
-        //=new Empleado();
-        
-        System.out.println("-----------------------------------");
-        System.out.println("       Registro Empleados");
-        System.out.println("-----------------------------------");
-        System.out.print("Ingrese Rut: ");
         while(e.getPerRut().isEmpty()){
             try{
-                e.setPerRut(entrada.readLine());
-            }catch(IOException ex){
+                e.setPerRut(JOptionPane.showInputDialog(null, "Ingrese Rut", "Registro Empleado", 0));
+                if(e.getPerRut()==null){
+                    e.setPerRut("");
+                }
+            }catch(NullPointerException ex){
+                JOptionPane.showMessageDialog(null, "Debe Ingresar un Rut");
+                e.setPerRut("");
+            }catch(Exception ex){
                 System.out.println("Ocurrio un error al ingresar datos= "+ex.toString());
             }
         }
-        System.out.print("Ingrese Nombre: ");
         while(e.getPerNombre().isEmpty()){
             try{
-                e.setPerNombre(entrada.readLine());
-            }catch(IOException ex){
+                e.setPerNombre(JOptionPane.showInputDialog(null, "Ingrese Nombre", "Registro Empleado", 0));
+                if(e.getPerNombre()==null){
+                   e.setPerNombre("");
+                }
+            }catch(Exception ex){
                 System.out.println("Ocurrio un error al ingresar datos= "+ex.toString());
             }
         }
-        System.out.print("Ingrese Apellidos: ");
         while(e.getPerApellidoPaterno().isEmpty()){
             try{
-                e.setPerApellidos(entrada.readLine());
-            }catch(IOException ex){
+                e.setPerApellidos(JOptionPane.showInputDialog(null, "Ingrese Apellidos", "Registro Empleado", 0));
+                if(e.getPerApellidoPaterno()==null){
+                   e.setPerApellidos("");
+                }
+            }catch(Exception ex){
                 System.out.println("Ocurrio un error al ingresar datos= "+ex.toString());
             }
         }
-        System.out.print("Ingrese Fecha de Nacimiento formato(dd-mm-aaaa): ");
         try{
-            e.setPerNacimiento(entrada.readLine());
-        }catch(IOException ex){
+            e.setPerNacimiento(JOptionPane.showInputDialog(null, "Ingrese Fecha de Nacimiento (dd-mm-aaaa)", "Registro Empleado", 0));
+            if(e.getPerNacimiento()==null){
+               e.setPerNacimiento("");
+            };
+        }catch(Exception ex){
             System.out.println("Ocurrio un error al ingresar datos= "+ex.toString());
         }
-        System.out.println("Menu Sexo: ");
-        for (Persona.SexoPersona s: Persona.SexoPersona.values() ) {
-            System.out.println ("\t" + s.toString() + " es " + s.getSexDescripcion());
-        }
-        System.out.print("Seleccione una Opcion : \t");
+//        System.out.println("Menu Sexo: ");
+//        String contenedor=new String[];
+//        int i=0;
+//        for (Persona.SexoPersona s: Persona.SexoPersona.values() ) {
+//            contenedor[i]="\t" + s.toString() + " es " + s.getSexDescripcion();
+//            System.out.println(contenedor[i]);
+//            i++;
+//        }
+        
         try{
-            e.setPerSexo(entrada.readLine());
-        }catch(IOException ex){
+            Object sexo=JOptionPane.showInputDialog(
+                    null,
+                    "Seleccione Sexo","Registro Empleado",
+                    JOptionPane.QUESTION_MESSAGE,
+                    null,
+                    new String[]{"M.-Masculino","F.- Femenino","I.- Indeterminado"},
+                     "I.- Indeterminado");
+            
+        }catch(Exception ex){
             System.out.println("Ocurrio un error al ingresar datos= "+ex.toString());
         }
         try{
-            empleados.add(e);
+            empleados.add(e);   //AGREGAR AL ARRAYLIST
             System.out.println("*****Empleado registrado con Exito*****");
-            System.out.println(e.toString());
-            System.out.println(e.getPerSexo().getSexDescripcion());
         }catch(Exception ex){
             System.out.println("Empleado no fue registrado, error "+ex.toString());
         }
         
-    }
+    } //FIN FUNCION REGISTROEMPLEADO
     
+    //FUNCIONA ASIGNA ANEXO AL EMPLEADO
     public void asignarAnexo(){
         String indiceStr;
         int indice, i=0;
         System.out.println("-----------------------------------");
         System.out.println("      Lista de Empleados");
         System.out.println("-----------------------------------");
-        for (i=0;i<empleados.size();i++) {
-            System.out.print( (i+1) +" "+empleados.get(i).getPerNombre()+" "+
+        //RECORRER ARRAYLIST
+        for (i=0 ; i<empleados.size() ; i=i+1) {
+            System.out.print( (i + 1) +" "+empleados.get(i).getPerNombre()+" "+
                     empleados.get(i).getPerApellidoPaterno()+" "+
                     empleados.get(i).getPerApellidoMaterno()+" tiene el anexo : ");
             if(empleados.get(i).getEmpAnexo() != null){
-                System.out.println(empleados.get(i).getEmpAnexo());
+                System.out.println(empleados.get(i).getEmpAnexo()); //QUE ANEXO TIENE
             }else{
                 System.out.println(" Sin asignar ");
             }
         }
         if(i>0){
             try {
-                System.out.print("Seleccione un empleado : \t");
+                System.out.print("Seleccione el codigo del empleado : \t");
                 indiceStr = entrada.readLine();
                 indice = Integer.parseInt(indiceStr);
-                indice = indice-1;
+                indice = indice - 1;
                 System.out.println("-----------------------------------");
                 System.out.println("         Lista de Anexo");
                 System.out.println("-----------------------------------");
-                for(Anexo a:Anexo.values()){ 
+//                  RECORRE ENUMERADO ANEXOS
+                for(Anexo a : Anexo.values()){ 
                     System.out.println("\t" + a.getAneCodigo()+ " - "+a.toString() + " area: "+ a.getAneUbicacion());
                 }
                 System.out.print("Seleccione Anexo: ");
+                // ASIGNA ANEXO A EMPLEADO
                 empleados.get(indice).setEmpAnexo(entrada.readLine());
                 System.out.println("*****Empleado se asigno anexo "+empleados.get(indice).getEmpAnexo().name()+" *****");
             } catch (IOException ex) {
@@ -142,25 +162,27 @@ public class Main {
                 System.out.println("Ocurrio un error al convertir numero= "+ex.toString());
             }
         }else{
-            System.out.println("-NO existen Trabajadores Ingresados-");
+            System.out.println("-NO existen Empleado Registrados-");
         }
     }
     
     public void obtenerUbicacion(){
         String indiceStr;
-        Integer indice, i=0;
+        Integer indice, i = 0,j = 0;
         System.out.println("-----------------------------------");
         System.out.println("  Lista de Trabajadores con Anexo");
         System.out.println("-----------------------------------");
-        for (i=0;i<empleados.size();i++) {
+        // RECORRE ARRAYLIST EMPLEADOS
+        for (i = 0 ; i < empleados.size() ; i=i+1) {
             if(empleados.get(i).getEmpAnexo() != null){
                 System.out.print( (i+1) +" "+empleados.get(i).getPerNombre()+" "+
                     empleados.get(i).getPerApellidoPaterno()+" "+
                     empleados.get(i).getPerApellidoMaterno()+" tiene el anexo : ");
                 System.out.println(empleados.get(i).getEmpAnexo());
+                j=j+1;
             }
         }
-        if(i>0){
+        if(j > 0){
             try {
                 System.out.print("Seleccione un empleado : \t");
                 indiceStr = entrada.readLine();
@@ -251,7 +273,7 @@ public class Main {
     
     public void listadoAsignaciones(){
         System.out.println("-----------------------------------");
-        System.out.println("      Reporte de Trabajadores");
+        System.out.println("      Reporte de Empleados");
         System.out.println("-----------------------------------");
         for (int i=0;i<empleados.size();i++) {
             System.out.print( (i+1) +" "+empleados.get(i).getPerNombre()+" "+
@@ -271,10 +293,10 @@ public class Main {
      * FUNCION PRINCIPAL (PUNTO DE PARTIDA)
      */
     public static void main(String[] args) {
-        String salir="n"; //INICIALIZAR VARIABLE SALIR CON "N"
-        Main principal=new Main();  //INSTANCIA CLASE
+        String salir = "n"; //INICIALIZAR VARIABLE SALIR CON "N"
+        Main principal = new Main();  //INSTANCIA CLASE LA MAIN, PARA FUNCIONES DEL MAIN
         do{
-            switch (principal.verMenu()){
+            switch(principal.verMenu()){
                 case "1":principal.registroEmpleado(new Empleado());
                     break;
                 case "2":principal.asignarAnexo();
@@ -288,7 +310,7 @@ public class Main {
                 case "6":principal.listadoAsignaciones();
                     break;
                 case "7":
-                    salir="s";
+                    salir="s";  //BANDERA
                 default:
             }
         }while(salir.equals("n")); //PREGUNTA A LA VARIABLE SALIR
